@@ -1,2 +1,32 @@
-ccswitch-gui.exe
+# 构建产物
 *.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+ccswitch-gui
+
+# 测试产物
+*.test
+*.out
+coverage.txt
+
+# Go 工具链
+/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.bak
+*.log

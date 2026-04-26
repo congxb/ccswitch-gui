@@ -553,7 +553,7 @@ func (ui *appUI) buildUI() {
 	// 组合底部
 	bottom := container.NewVBox(toolbar)
 	fullContent := container.NewBorder(nil, bottom, nil, nil, mainContent)
-	fullContent.Resize(fyne.NewSize(700, 400))
+	fullContent.Resize(fyne.NewSize(700, 650))
 
 	ui.window.SetContent(fullContent)
 }
@@ -673,7 +673,7 @@ func (ui *appUI) buildDetailPanel() {
 
 	ui.detailBox = container.NewPadded(form)
 	ui.detailScroll = container.NewVScroll(ui.detailBox)
-	ui.detailScroll.SetMinSize(fyne.NewSize(300, 400))
+	ui.detailScroll.SetMinSize(fyne.NewSize(300, 550))
 
 	// 默认显示空
 	ui.clearDetail()

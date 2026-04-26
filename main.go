@@ -12,15 +12,9 @@ func main() {
 
 	w := a.NewWindow("CCSwitch - Claude Code API 配置管理器")
 	w.Resize(fyne.NewSize(700, 650))
-	w.SetMinSize(fyne.NewSize(700, 650))
 
 	configPath := defaultConfigPath()
-	ui := createUI(w, configPath)
-	if ui == nil {
-		w.ShowAndRun()
-		return
-	}
-
+	_ = createUI(w, configPath)
 	w.ShowAndRun()
 }
 

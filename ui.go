@@ -754,8 +754,11 @@ func (ui *appUI) showProfileDetail(name string) {
 	ui.haikuEntry.SetText(env["ANTHROPIC_DEFAULT_HAIKU_MODEL"])
 	ui.timeoutEntry.SetText(env["ANTHROPIC_TIMEOUT"])
 
-	// Token 处理
-	token := env["ANTHROPIC_API_KEY"]
+	// Token 处理（兼容 API_KEY 和 AUTH_TOKEN）
+	token := env["ANTHROPIC_AUTH_TOKEN"]
+	if token == "" {
+		token = env["ANTHROPIC_API_KEY"]
+	}
 	ui.tokenEntry.SetText(token)
 	// 默认隐藏 token
 	ui.tokenVisible = false
@@ -810,7 +813,8 @@ func (ui *appUI) saveCurrentProfile() {
 
 	env["ANTHROPIC_BASE_URL"] = strings.TrimSpace(ui.urlEntry.Text)
 	env["ANTHROPIC_MODEL"] = strings.TrimSpace(ui.modelEntry.Text)
-	env["ANTHROPIC_API_KEY"] = strings.TrimSpace(ui.tokenEntry.Text)
+	env["ANTHROPIC_AUTH_TOKEN"] = strings.TrimSpace(ui.tokenEntry.Text)
+	delete(env, "ANTHROPIC_API_KEY")
 	env["ANTHROPIC_SMALL_FAST_MODEL"] = strings.TrimSpace(ui.fastEntry.Text)
 	env["ANTHROPIC_DEFAULT_SONNET_MODEL"] = strings.TrimSpace(ui.sonnetEntry.Text)
 	env["ANTHROPIC_DEFAULT_OPUS_MODEL"] = strings.TrimSpace(ui.opusEntry.Text)
@@ -949,7 +953,7 @@ func (ui *appUI) showAddDialog() {
 
 		env := make(map[string]string)
 		env["ANTHROPIC_BASE_URL"] = strings.TrimSpace(urlEntry.Text)
-		env["ANTHROPIC_API_KEY"] = strings.TrimSpace(tokenEntry.Text)
+		env["ANTHROPIC_AUTH_TOKEN"] = strings.TrimSpace(tokenEntry.Text)
 		env["ANTHROPIC_MODEL"] = strings.TrimSpace(modelEntry.Text)
 
 		ui.cfg.Profiles[name] = env

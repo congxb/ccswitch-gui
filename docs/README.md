@@ -1,7 +1,7 @@
 # CCSwitch GUI
 
 <p align="center">
-   <img src="screenshot.png" alt="CCSwitch GUI 截图" width="705">
+   <img src="../assets/screenshot.png" alt="CCSwitch GUI 截图" width="705">
 </p>
 
 <p align="center">

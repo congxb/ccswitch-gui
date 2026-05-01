@@ -26,9 +26,13 @@ func switchProfile(cfg *Config, profileName string) error {
 		json.Unmarshal(data, &raw)
 	}
 
-	// 替换 env 和 model，统一使用 AUTH_TOKEN，移除 API_KEY 避免冲突
+	// 替换 env 和 model，跳过空值和占位符的 AUTH_TOKEN
+	// 替换 env 和 model，跳过空值和占位符的 AUTH_TOKEN
 	envInterface := make(map[string]interface{})
 	for k, v := range env {
+		if k == "ANTHROPIC_AUTH_TOKEN" && (v == "" || len(v) < 15) {
+			continue
+		}
 		envInterface[k] = v
 	}
 	delete(envInterface, "ANTHROPIC_API_KEY")

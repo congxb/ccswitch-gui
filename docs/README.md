@@ -40,8 +40,8 @@ Claude Code 是 Anthropic 推出的 AI 编程助手 CLI 工具，功能强大，
 
 全自动五步安装流程：
 
-1. 检查并安装 Node.js（通过 winget）
-2. 检查并安装 Git for Windows（从华为云镜像下载，国内快速）
+1. 检查并安装 Node.js（从 npmmirror 下载 zip 包解压，国内快速）
+2. 检查并安装 Git for Windows（从华为云镜像下载，自动处理旧版本卸载）
 3. 自动配置 npm 全局路径和 Git 路径到系统环境变量
 4. 安装 Claude Code（`npm install -g @anthropic-ai/claude-code`）
 5. 验证安装结果
@@ -67,11 +67,23 @@ Claude Code 是 Anthropic 推出的 AI 编程助手 CLI 工具，功能强大，
 
 完全兼容 [huangdijia/ccswitch](https://github.com/huangdijia/ccswitch) 的配置格式，配置文件位于 `~/.ccswitch/ccs.json`。
 
+## 版本说明
+
+| 版本 | 文件名 | 适配系统 | 说明 |
+|------|--------|---------|------|
+| v1.0.1 | `ccswitch-gui.exe` | Windows 10 | 初始版本 |
+| v1.1.0 | `ccswitch-gui-win11.exe` | Windows 11 | 修复 AUTH_TOKEN 干扰问题 |
+
+两个版本可同时使用，互不影响。
+
 ## 快速开始
 
 ### 方式一：直接下载
 
-从 [Releases](https://github.com/congxb/ccswitch-gui/releases) 下载最新的 `ccswitch-gui.exe`，双击运行即可。
+从 [Releases](https://github.com/congxb/ccswitch-gui/releases) 下载对应系统版本，双击运行即可。
+
+- Windows 10 用户下载 `ccswitch-gui.exe`
+- Windows 11 用户下载 `ccswitch-gui-win11.exe`
 
 ### 方式二：从源码构建
 
@@ -86,20 +98,27 @@ winget install mingw
 # 3. 构建依赖
 go mod tidy
 
-# 4. 编译（产出单个 exe）
-CGO_ENABLED=1 go build -ldflags "-s -w -H windowsgui" -o ccswitch-gui.exe .
+# 4. 编译（产出单个 exe，无控制台窗口）
+CGO_ENABLED=1 go build -ldflags "-s -w -H windowsgui" -o ccswitch-gui.exe ./src/
 ```
 
 ## 项目结构
 
 ```
 ccswitch-gui/
-├── main.go          # 入口，创建窗口
-├── config.go        # ccs.json 配置文件读写
-├── settings.go      # ~/.claude/settings.json 读写
-├── ui.go            # 主界面和安装流程
-├── github.go        # GitHub 预设配置下载
-├── winpath.go       # Windows 注册表 PATH 管理
+├── src/                    # Go 源码
+│   ├── main.go             # 入口，创建窗口，CLI 模式
+│   ├── config.go           # ccs.json 配置文件读写
+│   ├── settings.go         # ~/.claude/settings.json 读写
+│   ├── ui.go               # 主界面和安装流程
+│   ├── github.go           # GitHub 预设配置下载
+│   └── winpath.go          # Windows 注册表 PATH 管理
+├── scripts/                # 辅助脚本
+│   ├── 一键卸载Claude.bat      # 交互式卸载
+│   └── 自动清理测试环境.bat     # 一键清理
+├── assets/                 # 静态资源
+│   └── screenshot.png
+├── docs/                   # 文档
 ├── go.mod
 └── go.sum
 ```
